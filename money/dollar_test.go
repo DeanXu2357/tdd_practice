@@ -40,11 +40,12 @@ func Test_Money_Currency(t *testing.T) {
 }
 
 func Test_Money_Addition(t *testing.T) {
-	b := &bank{}
+	b := NewBank()
 
 	fiveUSD := NewDollar(5)
-	s := fiveUSD.Plus(NewDollar(5)).Reduce(b, CurUSD)
-	assert.Equal(t, NewDollar(10), s)
+	sum := fiveUSD.Plus(NewDollar(5))
+	reduced := sum.Reduce(nil, CurUSD)
+	assert.Equal(t, NewDollar(10), reduced)
 
 	fiveTWD := NewNewTaiwanDollar(5)
 	sumOfTWD := fiveTWD.Plus(NewNewTaiwanDollar(5))
@@ -52,8 +53,17 @@ func Test_Money_Addition(t *testing.T) {
 }
 
 func Test_bank_Reduce(t *testing.T) {
-	b := &bank{}
+	b := NewBank()
 
 	oneUSD := NewDollar(1)
-	assert.Equal(t, NewNewTaiwanDollar(29), b.Reduce(oneUSD, CurTWD))
+	assert.Equal(t, NewDollar(1), b.Reduce(oneUSD, CurUSD))
+}
+
+func Test_bank_Reduce_Different_Currency(t *testing.T) {
+	b := NewBank()
+	b.SetRate(CurTWD, CurUSD, 29)
+
+	twd29 := NewNewTaiwanDollar(29)
+
+	assert.Equal(t, NewDollar(1), b.Reduce(twd29, CurUSD))
 }
