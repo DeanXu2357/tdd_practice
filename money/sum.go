@@ -5,11 +5,21 @@ type Sum interface {
 }
 
 type sum struct {
-	augend Money
-	addend Money
+	augend Expression
+	addend Expression
 }
 
-func NewSum(augend, addend Money) Sum {
+func (s *sum) Times(t int64) Expression {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s *sum) Plus(addend Expression) Expression {
+	//TODO implement me
+	panic("implement me")
+}
+
+func NewSum(augend, addend Expression) Sum {
 	return &sum{augend, addend}
 }
 

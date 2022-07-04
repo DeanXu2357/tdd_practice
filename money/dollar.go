@@ -17,13 +17,13 @@ func New(amount int64, currency string) Money {
 
 type Expression interface {
 	Reduce(bank Bank, to string) Money
+	Times(t int64) Expression
+	Plus(addend Expression) Expression
 }
 
 type Money interface {
 	Expression
 
-	Times(t int64) Expression
-	Plus(addend Expression) Expression
 	Equals(c Money) bool
 
 	Amount() int64
@@ -43,10 +43,17 @@ func (m *money) Currency() string {
 	return m.currency
 }
 
-func (m *money) Plus(addend Expression) Expression {
-	a := addend.(Money)
+func (m *money) Equals(c Money) bool {
+	if c == nil {
+		return false
+	}
 
-	return NewSum(m, a)
+	return (m.currency == c.Currency()) &&
+		(m.amount == c.Amount())
+}
+
+func (m *money) Plus(addend Expression) Expression {
+	return NewSum(m, addend)
 }
 
 func (m *money) Times(t int64) Expression {
@@ -57,13 +64,4 @@ func (m *money) Reduce(bank Bank, to string) Money {
 	rate := bank.Rate(m.currency, to)
 
 	return New(m.amount/rate, to)
-}
-
-func (m *money) Equals(c Money) bool {
-	if c == nil {
-		return false
-	}
-
-	return (m.currency == c.Currency()) &&
-		(m.amount == c.Amount())
 }
