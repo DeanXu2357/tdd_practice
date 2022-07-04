@@ -45,7 +45,8 @@ func (m *money) Currency() string {
 
 func (m *money) Plus(addend Expression) Expression {
 	a := addend.(Money)
-	return &sum{augend: m, addend: a}
+
+	return NewSum(m, a)
 }
 
 func (m *money) Times(t int64) Expression {

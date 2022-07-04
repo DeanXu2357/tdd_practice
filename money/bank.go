@@ -27,5 +27,6 @@ func (b *bank) Rate(from, to string) int64 {
 }
 
 func (b *bank) Reduce(e Expression, to string) Money {
+
 	return e.Reduce(b, to)
 }

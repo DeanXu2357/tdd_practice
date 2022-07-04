@@ -9,8 +9,12 @@ type sum struct {
 	addend Money
 }
 
+func NewSum(augend, addend Money) Sum {
+	return &sum{augend, addend}
+}
+
 func (s *sum) Reduce(bank Bank, to string) Money {
-	amount := s.augend.Amount() + s.addend.Amount()
+	amount := s.augend.Reduce(bank, to).Amount() + s.addend.Reduce(bank, to).Amount()
 
 	return New(amount, to)
 }

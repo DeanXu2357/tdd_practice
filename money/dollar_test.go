@@ -44,7 +44,7 @@ func Test_Money_Addition(t *testing.T) {
 
 	fiveUSD := NewDollar(5)
 	sum := fiveUSD.Plus(NewDollar(5))
-	reduced := sum.Reduce(nil, CurUSD)
+	reduced := b.Reduce(sum, CurUSD)
 	assert.Equal(t, NewDollar(10), reduced)
 
 	fiveTWD := NewNewTaiwanDollar(5)
@@ -74,5 +74,6 @@ func Test_mix_addition(t *testing.T) {
 
 	twd29 := NewNewTaiwanDollar(29)
 
-	assert.Equal(t, NewDollar(2), NewDollar(1).Plus(twd29))
+	sum := NewDollar(1).Plus(twd29)
+	assert.Equal(t, NewDollar(2), b.Reduce(sum, CurUSD))
 }
