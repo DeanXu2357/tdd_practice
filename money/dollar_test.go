@@ -67,3 +67,12 @@ func Test_bank_Reduce_Different_Currency(t *testing.T) {
 
 	assert.Equal(t, NewDollar(1), b.Reduce(twd29, CurUSD))
 }
+
+func Test_mix_addition(t *testing.T) {
+	b := NewBank()
+	b.SetRate(CurTWD, CurUSD, 29)
+
+	twd29 := NewNewTaiwanDollar(29)
+
+	assert.Equal(t, NewDollar(2), NewDollar(1).Plus(twd29))
+}
